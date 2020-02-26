@@ -5,18 +5,17 @@ const POKEMONS_URL = `${BASE_URL}/pokemons`
 document.addEventListener("DOMContentLoaded", function() {
     console.log ("DOM Content Loaded")
     fetchTrainers(TRAINERS_URL)
-
-
 })
 
 function fetchTrainers(url) {
     return fetch(url)
     .then(response => response.json())
     .then(object => {
-        // console.log(object);
-        // console.log(object.data[0])
         console.log("fetch complete!")
         renderTrainerCard(object)
+        console.log("Trainer Card rendered with title and add Pokemon button")
+        // addPokemon()
+        // removePokemon()
     })
 }
 
@@ -27,6 +26,7 @@ function renderTrainerCard(object) {
 
     object.data.map(trainer => {
         let card = document.createElement(`div`)
+
         card.className = "card"
         card.setAttribute("data-id", `${trainer.id}`)
         main.appendChild(card)
@@ -44,10 +44,8 @@ function renderTrainerCard(object) {
         let ul = document.createElement(`ul`)
         card.appendChild(ul)
         
-        console.log(trainer.attributes.pokemons)
         let pokemons = trainer.attributes.pokemons
         pokemons.forEach(pokemon => {
-            console.log(pokemon)
             let li = document.createElement(`li`)
             li.innerText = `${pokemon.species} (${pokemon.nickname})`
             ul.appendChild(li)
@@ -56,12 +54,25 @@ function renderTrainerCard(object) {
             button.className = "release"
             button.innerText = "Release"
             li.appendChild(button)
-        })
-        
-    })
-    console.log("Trainer Card rendered with title and add Pokemon button")
 
+            removePokemon(button)
+        })
+        addPokemon(addPokemonButton)
+    })
 }
 
 // set event listener for add pokemon
+function addPokemon(button) {
+    button.addEventListener("click", function(){
+
+    console.log("pokemon added")
+    })
+}
 // set event listener for remove pokemon
+
+function removePokemon(button) {
+    button.addEventListener("click", function(){
+
+    console.log("pokemon removed")
+    })
+}

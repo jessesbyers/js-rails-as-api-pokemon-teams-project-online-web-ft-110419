@@ -20,8 +20,9 @@ function fetchTrainers(url) {
     })
 }
 
+
+
 function renderTrainerCard(object) {
-    console.log("Trainer Card rendered")
     let main = document.querySelector("main")
 
     object.data.map(trainer => {
@@ -39,17 +40,27 @@ function renderTrainerCard(object) {
         addPokemonButton.innerText = "Add Pokemon"
         card.appendChild(addPokemonButton)
 
+
         let ul = document.createElement(`ul`)
         card.appendChild(ul)
         
-        // need to create an li for 6 Pokemon with name(nickname) and remove button and append to ul
-
-
-
-        console.log(trainer)
-        console.log(trainer.attributes.name)
+        console.log(trainer.attributes.pokemons)
+        let pokemons = trainer.attributes.pokemons
+        pokemons.forEach(pokemon => {
+            console.log(pokemon)
+            let li = document.createElement(`li`)
+            li.innerText = `${pokemon.species} (${pokemon.nickname})`
+            ul.appendChild(li)
+            let button = document.createElement(`button`)
+            button.setAttribute("data-pokemon-id", `${pokemon.id}`)
+            button.className = "release"
+            button.innerText = "Release"
+            li.appendChild(button)
+        })
         
     })
+    console.log("Trainer Card rendered with title and add Pokemon button")
+
 }
 
 // set event listener for add pokemon

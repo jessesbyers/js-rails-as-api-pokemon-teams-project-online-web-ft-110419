@@ -25,7 +25,8 @@ function renderTrainerCard(object) {
     let main = document.querySelector("main")
 
     object.data.map(trainer => {
-        let card = document.createElement(`div.card`)
+        let card = document.createElement(`div`)
+        card.className = "card"
         card.setAttribute("data-id", `${trainer.id}`)
         main.appendChild(card)
 

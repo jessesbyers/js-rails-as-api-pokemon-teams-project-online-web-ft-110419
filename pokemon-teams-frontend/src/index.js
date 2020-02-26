@@ -38,14 +38,18 @@ function renderTrainerCard(object) {
         addPokemonButton.innerText = "Add Pokemon"
         card.appendChild(addPokemonButton)
 
+        let ul = document.createElement(`ul`)
+        card.appendChild(ul)
+        
+        // need to create an li for 6 Pokemon with name(nickname) and remove button and append to ul
+
 
 
         console.log(trainer)
         console.log(trainer.attributes.name)
-
-
-
         
     })
 }
 
+// set event listener for add pokemon
+// set event listener for remove pokemon

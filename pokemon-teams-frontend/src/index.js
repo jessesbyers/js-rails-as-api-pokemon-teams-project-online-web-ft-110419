@@ -14,8 +14,6 @@ function fetchTrainers(url) {
         console.log("fetch complete!")
         renderTrainerCard(object)
         console.log("Trainer Card rendered with title and add Pokemon button")
-        // addPokemon()
-        // removePokemon()
     })
 }
 
@@ -44,35 +42,68 @@ function renderTrainerCard(object) {
         let ul = document.createElement(`ul`)
         card.appendChild(ul)
         
-        let pokemons = trainer.attributes.pokemons
-        pokemons.forEach(pokemon => {
-            let li = document.createElement(`li`)
-            li.innerText = `${pokemon.species} (${pokemon.nickname})`
-            ul.appendChild(li)
-            let button = document.createElement(`button`)
-            button.setAttribute("data-pokemon-id", `${pokemon.id}`)
-            button.className = "release"
-            button.innerText = "Release"
-            li.appendChild(button)
+        resetPokemon(ul, trainer)
+        addPokemon(ul, trainer, addPokemonButton)
+    })
+}
 
-            removePokemon(button)
-        })
-        addPokemon(addPokemonButton)
+function resetPokemon(ul, trainer) {
+    let pokemons = trainer.attributes.pokemons
+    pokemons.forEach(pokemon => {
+        let li = document.createElement(`li`)
+        li.innerText = `${pokemon.species} (${pokemon.nickname})`
+        ul.appendChild(li)
+        let button = document.createElement(`button`)
+        button.setAttribute("data-pokemon-id", `${pokemon.id}`)
+        button.className = "release"
+        button.innerText = "Release"
+        li.appendChild(button)
+
+        removePokemon(pokemon, button)
     })
 }
 
 // set event listener for add pokemon
-function addPokemon(button) {
+function addPokemon(ul, trainer, button) {
     button.addEventListener("click", function(){
 
-    console.log("pokemon added")
+        let configObj = {
+            method: "POST",
+            headers: 
+            {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+              trainer_id: trainer.id
+            })
+        };
+          
+        return fetch(POKEMONS_URL, configObj)
+        .then(function(response) {
+            response.json();
+        })
+        .then(function(json) {
+        console.log(POKEMONS_URL)
+        console.log("pokemon added")
+        console.log(button)
+        console.log(trainer)
+        })
     })
+    resetPokemon(ul, trainer)
 }
-// set event listener for remove pokemon
 
-function removePokemon(button) {
+// set event listener for remove pokemon
+function removePokemon(pokemon, button) {
     button.addEventListener("click", function(){
 
     console.log("pokemon removed")
+    console.log(button)
+    console.log(pokemon)
+
+
+
+    // remove this pokemon from the trainer's relationship database and from the view
     })
 }
+

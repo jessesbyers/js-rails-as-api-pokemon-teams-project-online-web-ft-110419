@@ -45,10 +45,15 @@ function renderTrainerCard(object) {
         resetPokemon(ul, trainer)
         addPokemon(ul, trainer, addPokemonButton)
     })
+    // addPokemon(ul, trainer, addPokemonButton)
+
 }
 
 function resetPokemon(ul, trainer) {
     let pokemons = trainer.attributes.pokemons
+// need to clear out li's so that I don't get repeats
+    console.log(ul)
+
     pokemons.forEach(pokemon => {
         let li = document.createElement(`li`)
         li.innerText = `${pokemon.species} (${pokemon.nickname})`
@@ -84,14 +89,12 @@ function addPokemon(ul, trainer, button) {
             response.json();
         })
         .then(function(json) {
-        console.log(POKEMONS_URL)
+        resetPokemon(ul, trainer)
         console.log("pokemon added")
-        console.log(button)
-        console.log(trainer)
         })
     })
-    resetPokemon(ul, trainer)
 }
+
 
 // set event listener for remove pokemon
 function removePokemon(pokemon, button) {

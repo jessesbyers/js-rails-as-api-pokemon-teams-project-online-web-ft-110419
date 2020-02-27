@@ -25,6 +25,10 @@ class PokemonsController < ApplicationController
         end
     end 
 
+    def destroy
+        pokemon.destroy 
+    end
+
     private
 
     def pokemon_params 

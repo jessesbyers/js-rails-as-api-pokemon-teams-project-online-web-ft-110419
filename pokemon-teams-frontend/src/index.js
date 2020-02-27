@@ -78,6 +78,15 @@ function resetPokemon(card, trainer) {
         })
         card.appendChild(ul)
         console.log("pokemon list reset")
+
+        card.querySelectorAll("button").forEach(button => { 
+            let pokemonId = button.attributes[0].value
+            button.addEventListener("click", function(){
+                removePokemon(button, pokemonId, trainer)
+            })
+        })
+
+
 }
 
 
@@ -109,16 +118,32 @@ function addPokemon(card, trainer) {
 }
 
 
+function removePokemon(button, pokemonId, trainer) {
+    let configObj = {
+        method: "DELETE",
+        headers: 
+        {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            id: pokemonId,
+            trainer_id: trainer.id
+        })
+    };
+    
 
-// set event listener for remove pokemon
-// function removePokemon(pokemon, button) {
-//     button.addEventListener("click", function(){
+// something wrong with this syntax...line 108
+    fetch(`${POKEMONS_URL}/${pokemonId}`, configObj) 
+        .then(function(response) {
+            response.json();
+        })
+        .then(function(json) {
+            console.log(json)
 
-//     // console.log("pokemon removed")
-//     // console.log(button)
-//     // console.log(pokemon)
-
-//     // remove this pokemon from the trainer's relationship database and from the view
-//     })
-// }
+        // fetchPokemon(card, trainer)
+        console.log("pokemon deleted")
+        button.parentElement.remove()
+    })
+}
 

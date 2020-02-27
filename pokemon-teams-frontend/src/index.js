@@ -50,19 +50,21 @@ function renderTrainerCard(object) {
 
         resetPokemon(card, trainer)
         addPokemonButton.addEventListener("click", function(){
-            addPokemon(card, trainer)
+            if (trainer.attributes.pokemons.length < 6) {
+                addPokemon(card, trainer)
+            }
+           if (trainer.attributes.pokemons.length >= 6) {
+                fetchPokemon(card, trainer)
+            }
         })
     })
 }
 
 function clearPokemonList(card) {
         card.querySelector("ul").remove()
-        console.log("pokemon list cleared")
 }
 
 function resetPokemon(card, trainer) {
-    console.log(trainer.attributes.pokemons)
-
     let ul = document.createElement(`ul`)
     pokemons = trainer.attributes.pokemons
 
@@ -77,48 +79,46 @@ function resetPokemon(card, trainer) {
             li.appendChild(button)
         })
         card.appendChild(ul)
-        console.log("pokemon list reset")
 
-        card.querySelectorAll("button").forEach(button => { 
+        card.querySelectorAll("button.release").forEach(button => { 
             let pokemonId = button.attributes[0].value
             button.addEventListener("click", function(){
                 removePokemon(button, pokemonId, trainer)
             })
         })
-
-
 }
 
 
 function addPokemon(card, trainer) {
-    let configObj = {
-        method: "POST",
-        headers: 
-        {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-        },
-        body: JSON.stringify({
-        trainer_id: trainer.id
-        })
-    };
-    
+    console.log(trainer.attributes.pokemons.length)
 
-// something wrong with this syntax...line 108
-    fetch(POKEMONS_URL, configObj) 
-        .then(function(response) {
-            response.json();
-        })
-        .then(function(json) {
-            console.log(json)
+        let configObj = {
+            method: "POST",
+            headers: 
+            {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+            },
+            body: JSON.stringify({
+            trainer_id: trainer.id
+            })
+        };
+        
+        fetch(POKEMONS_URL, configObj) 
+            .then(function(response) {
+                // response.json();
+            })
+            .then(function(json) {
+                console.log(json)
 
-        fetchPokemon(card, trainer)
-        console.log("pokemon added")
-    })
+            fetchPokemon(card, trainer)
+            console.log("pokemon added")
+        })
+    // }
 }
 
 
-function removePokemon(button, pokemonId, trainer) {
+function removePokemon(button, pokemonId) {
     let configObj = {
         method: "DELETE",
         headers: 
@@ -126,23 +126,14 @@ function removePokemon(button, pokemonId, trainer) {
         "Content-Type": "application/json",
         "Accept": "application/json"
         },
-        body: JSON.stringify({
-            id: pokemonId,
-            trainer_id: trainer.id
-        })
     };
     
-
-// something wrong with this syntax...line 108
     fetch(`${POKEMONS_URL}/${pokemonId}`, configObj) 
         .then(function(response) {
-            response.json();
+            // response.json();
         })
         .then(function(json) {
-            console.log(json)
 
-        // fetchPokemon(card, trainer)
-        console.log("pokemon deleted")
         button.parentElement.remove()
     })
 }

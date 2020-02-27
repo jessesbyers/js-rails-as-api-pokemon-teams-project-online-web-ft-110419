@@ -26,6 +26,7 @@ class PokemonsController < ApplicationController
     end 
 
     def destroy
+        pokemon = Pokemon.find(params[:id])
         pokemon.destroy 
     end
 

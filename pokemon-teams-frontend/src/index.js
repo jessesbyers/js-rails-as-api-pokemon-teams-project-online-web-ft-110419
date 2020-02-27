@@ -9,15 +9,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
 })
 
+function fetchPokemon(card, trainer) {
+    console.log(trainer)
+    return fetch(`http://localhost:3000/trainers/${trainer.id}`)
+    .then(response => response.json())
+    .then(object => {
+        console.log(object.data.attributes.pokemons)
+        trainer = object
+        console.log(trainer)
+        renderSingleCard(card, trainer)
+    })
+}
+
+function renderSingleCard(card, trainer) {
+    clearPokemonList(card)
+    console.log("card cleared")
+    resetPokemon(card, trainer)
+    console.log("card reset")
+}
 
 
 function fetchTrainers(url) {
     return fetch(url)
     .then(response => response.json())
     .then(object => {
-        console.log("fetch complete!")
         renderTrainerCard(object)
-        console.log("Trainer Card rendered with title and add Pokemon button")
     })
 }
 
@@ -26,8 +42,6 @@ function renderTrainerCard(object) {
 
     object.data.map(trainer => {
         let card = document.createElement(`div`)
-        console.log(card)
-
         card.className = "card"
         card.setAttribute("data-id", `${trainer.id}`)
         main.appendChild(card)
@@ -46,7 +60,6 @@ function renderTrainerCard(object) {
             addPokemon(card, trainer)
         })
     })
-
 }
 
 function clearPokemonList(card) {
@@ -87,27 +100,28 @@ function addPokemon(card, trainer) {
     };
     
 
-// something wrong with this syntax...
-    return fetch(POKEMONS_URL, configObj)
+// something wrong with this syntax...line 108
+    return fetch(POKEMONS_URL, configObj) 
         .then(response => response.json())
         .then(json =>  {
+        fetchPokemon(card, trainer)
+
         console.log("pokemon added")
-        clearPokemonList(card)
-        resetPokemon()
+        console.log(json)
     })
 }
 
 
 
 // set event listener for remove pokemon
-function removePokemon(pokemon, button) {
-    button.addEventListener("click", function(){
+// function removePokemon(pokemon, button) {
+//     button.addEventListener("click", function(){
 
-    // console.log("pokemon removed")
-    // console.log(button)
-    // console.log(pokemon)
+//     // console.log("pokemon removed")
+//     // console.log(button)
+//     // console.log(pokemon)
 
-    // remove this pokemon from the trainer's relationship database and from the view
-    })
-}
+//     // remove this pokemon from the trainer's relationship database and from the view
+//     })
+// }
 

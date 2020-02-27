@@ -3,29 +3,22 @@ const TRAINERS_URL = `${BASE_URL}/trainers`
 const POKEMONS_URL = `${BASE_URL}/pokemons`
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log ("DOM Content Loaded")
     fetchTrainers(TRAINERS_URL)
-    console.log("trainers fetched")
-
+    console.log ("DOM Content Loaded")
 })
 
 function fetchPokemon(card, trainer) {
-    console.log(trainer)
     return fetch(`http://localhost:3000/trainers/${trainer.id}`)
     .then(response => response.json())
     .then(object => {
-        console.log(object.data.attributes.pokemons)
         trainer = object
-        console.log(trainer)
         renderSingleCard(card, trainer)
     })
 }
 
 function renderSingleCard(card, trainer) {
     clearPokemonList(card)
-    console.log("card cleared")
-    resetPokemon(card, trainer)
-    console.log("card reset")
+    resetPokemon(card, trainer.data)
 }
 
 
@@ -64,10 +57,11 @@ function renderTrainerCard(object) {
 
 function clearPokemonList(card) {
         card.querySelector("ul").remove()
-        console.log("ul removed")
+        console.log("pokemon list cleared")
 }
 
 function resetPokemon(card, trainer) {
+    console.log(trainer.attributes.pokemons)
 
     let ul = document.createElement(`ul`)
     pokemons = trainer.attributes.pokemons
@@ -83,6 +77,7 @@ function resetPokemon(card, trainer) {
             li.appendChild(button)
         })
         card.appendChild(ul)
+        console.log("pokemon list reset")
 }
 
 
@@ -101,13 +96,15 @@ function addPokemon(card, trainer) {
     
 
 // something wrong with this syntax...line 108
-    return fetch(POKEMONS_URL, configObj) 
-        .then(response => response.json())
-        .then(json =>  {
-        fetchPokemon(card, trainer)
+    fetch(POKEMONS_URL, configObj) 
+        .then(function(response) {
+            response.json();
+        })
+        .then(function(json) {
+            console.log(json)
 
+        fetchPokemon(card, trainer)
         console.log("pokemon added")
-        console.log(json)
     })
 }
 
